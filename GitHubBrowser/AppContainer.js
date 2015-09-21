@@ -9,9 +9,11 @@ var {
 	View,
 	Image,
 	Component,
-	ActivityIndicatorIOS,
-	TabBarIOS
+	TabBarIOS,
+  NavigatorIOS
 } = React;
+
+var Feed = require('./Feed.js');
 
 class AppContainer extends Component{
 	constructor(props) {
@@ -28,16 +30,19 @@ class AppContainer extends Component{
         		<TabBarIOS.Item title="Feed"
         			selected={this.state.selectedTab == 'feed'}
         			icon={require('image!inbox')} 
-        			style={styles.tab}
         			onPress={() => this.setState({
         				selectedTab: 'feed' })}
         		>
-        			<Text style={styles.welcome}>Tab 1</Text>
+        			<NavigatorIOS
+                style={{flex: 1}}
+                initialRoute={{
+                  component: Feed,
+                  title: 'Feed'
+                }} />
     			</TabBarIOS.Item>
     			<TabBarIOS.Item title="Search"
         			selected={this.state.selectedTab == 'search'}
         			icon={require('image!search')} 
-        			style={styles.tab}
         			onPress={() => this.setState({
         				selectedTab: 'search' })}
         		>
@@ -59,11 +64,8 @@ var styles = StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
-  },
-  tab: {
-  	width: 10,
-  	height: 10
+    marginTop: 30,
+
   }
 });
 
