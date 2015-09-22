@@ -1,6 +1,6 @@
-var buffer = require('buffer');
 var AsyncStorage = require('react-native').AsyncStorage;
 var _ = require('lodash');
+var encoding = require('NativeModules').Encoding;
 
 const authKey = 'auth';
 const userKey =  'user';
@@ -35,10 +35,10 @@ class AuthService {
 	}
 
 	login(creds,cb) {
-		var b = new buffer.Buffer(creds.username + ":" + creds.password);
-
-		var encodedAuth = b.toString('base64');
-
+		var authStr = creds.username + ":" + creds.password;
+		
+		encoding.base64Encode(authStr,(encodedAuth) => {
+		
 		fetch('https://api.github.com/user', {
 			headers: {
 				'Authorization' : 'Basic ' + encodedAuth
@@ -75,6 +75,7 @@ class AuthService {
 		})
 		.finally(()=> {
 			return cb({showProgress: false});
+		});
 		});
 	}
 }
